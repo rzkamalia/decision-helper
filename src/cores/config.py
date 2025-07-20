@@ -24,3 +24,5 @@ class Configuration(BaseSettings):
     pg_port: int
     pg_host: str
     pg_password: str
+
+    google_application_credentials: str

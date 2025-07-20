@@ -1,0 +1,45 @@
+name: image search backend deploy
+
+on:
+  push:
+    branches:
+    - 'master'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: checkout
+      uses: actions/checkout@v4
+
+    - name: authenticate to google cloud
+      uses: google-github-actions/auth@v2
+      with:
+        credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+        project_id: ${{ secrets.GOOGLE_PROJECT }}
+
+    - name: set up cloud SDK
+      uses: google-github-actions/setup-gcloud@v2
+
+    - name: build and push the docker image
+      env:
+        GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
+      run: |
+        gcloud auth configure-docker asia-southeast2-docker.pkg.dev
+        docker build -t asia-southeast2-docker.pkg.dev/$GOOGLE_PROJECT/decision-helper/be:latest .
+        docker push asia-southeast2-docker.pkg.dev/$GOOGLE_PROJECT/decision-helper/be:latest
+  
+    - name: set up GKE credentials
+      uses: google-github-actions/get-gke-credentials@v2
+      with:
+        cluster_name: decision-helper
+        location: asia-southeast2
+
+    - name: deploy to GKE
+      env:
+        GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
+        APP_NAME: ${{ secrets.APP_NAME }}
+      run: |
+        kubectl create deployment $APP_NAME --image=asia-southeast2-docker.pkg.dev/$GOOGLE_PROJECT/decision-helper-repo/be:latest 
+        kubectl expose deployment $APP_NAME --type LoadBalancer --port 5000 --target-port 5000
