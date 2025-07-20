@@ -27,8 +27,8 @@ jobs:
         GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
       run: |
         gcloud auth configure-docker asia-southeast2-docker.pkg.dev
-        docker build -t asia-southeast2-docker.pkg.dev/$GOOGLE_PROJECT/decision-helper/be:latest .
-        docker push asia-southeast2-docker.pkg.dev/$GOOGLE_PROJECT/decision-helper/be:latest
+        docker build -t asia-southeast2-docker.pkg.dev/$GOOGLE_PROJECT/decision-helper-repo/be:latest .
+        docker push asia-southeast2-docker.pkg.dev/$GOOGLE_PROJECT/decision-helper-repo/be:latest
   
     - name: set up GKE credentials
       uses: google-github-actions/get-gke-credentials@v2
