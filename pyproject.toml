@@ -1,0 +1,38 @@
+[project]
+name = "decision-helper"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi>=0.116.1",
+    "langchain-core>=0.3.69",
+    "langchain-openai>=0.3.28",
+    "langchain-tavily>=0.2.10",
+    "langgraph>=0.5.3",
+    "psycopg2-binary>=2.9.10",
+    "pydantic-settings>=2.10.1",
+    "ruff>=0.12.4",
+    "uvicorn>=0.35.0",
+]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "B", "UP", "PL", "RUF", "C90", "A", "COM", "C4", "PIE", "PT", "Q", "RSE", "SIM", "TID", "ARG", "PTH", "TD", "ERA"]
+ignore = ["COM812"]
+fixable = ["ALL"]
+unfixable = []
+
+[tool.ruff]
+line-length = 120
+indent-width = 4
+target-version = "py313"
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"
+docstring-code-format = true
+skip-magic-trailing-comma = false
+
+[tool.ruff.lint.isort]
+known-first-party = ["."]
