@@ -30,7 +30,7 @@ jobs:
       uses: google-github-actions/setup-gcloud@v2
 
     - name: create repository
-      run: 
+      run: |
         gcloud artifacts repositories create ${{ env.IMAGE_REPOSITORY }} \
         --repository-format=docker \
         --location=${{ env.LOCATION }} 
