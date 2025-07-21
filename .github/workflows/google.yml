@@ -1,9 +1,16 @@
-name: image search backend deploy
+name: decision-helper backend
 
 on:
   push:
     branches:
     - 'master'
+
+env:
+  CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+  PROJECT_ID: ${{ secrets.GOOGLE_PROJECT }}
+  GKE_CLUSTER: decision-helper
+  LOCATION: asia-southeast2
+  IMAGE_REPOSITORY: decision-helper-repo
 
 jobs:
   deploy:
@@ -16,30 +23,26 @@ jobs:
     - name: authenticate to google cloud
       uses: google-github-actions/auth@v2
       with:
-        credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
-        project_id: ${{ secrets.GOOGLE_PROJECT }}
+        credentials_json: ${{ env.CREDENTIALS }}
+        project_id: ${{ env.PROJECT_ID }}
 
     - name: set up cloud SDK
       uses: google-github-actions/setup-gcloud@v2
 
+    - name: create repository
+      run: 
+        gcloud artifacts repositories create ${{ env.IMAGE_REPOSITORY }} \
+        --repository-format=docker \
+        --location=${{ env.LOCATION }} 
+
     - name: build and push the docker image
-      env:
-        GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
       run: |
-        gcloud auth configure-docker asia-southeast2-docker.pkg.dev
-        docker build -t asia-southeast2-docker.pkg.dev/$GOOGLE_PROJECT/decision-helper-repo/be:latest .
-        docker push asia-southeast2-docker.pkg.dev/$GOOGLE_PROJECT/decision-helper-repo/be:latest
+        gcloud auth configure-docker ${{ env.LOCATION }}-docker.pkg.dev
+        docker build -t ${{ env.LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.IMAGE_REPOSITORY }}/be:latest .
+        docker push ${{ env.LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.IMAGE_REPOSITORY }}/be:latest
   
     - name: set up GKE credentials
       uses: google-github-actions/get-gke-credentials@v2
       with:
-        cluster_name: decision-helper
-        location: asia-southeast2
-
-    - name: deploy to GKE
-      env:
-        GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
-        APP_NAME: ${{ secrets.APP_NAME }}
-      run: |
-        kubectl create deployment $APP_NAME --image=asia-southeast2-docker.pkg.dev/$GOOGLE_PROJECT/decision-helper-repo/be:latest 
-        kubectl expose deployment $APP_NAME --type LoadBalancer --port 8000 --target-port 8000
+        cluster_name: ${{ env.GKE_CLUSTER }}
+        location: ${{ env.LOCATION }}
