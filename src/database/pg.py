@@ -11,14 +11,7 @@ from src import app_config
 def get_db_connection():
     """Connecting to database.
     """
-    conn = psycopg2.connect(
-        user=app_config.pg_user,
-        password=app_config.pg_password,
-        host=app_config.pg_host,
-        port=app_config.pg_port,
-        dbname=app_config.pg_db,
-        sslmode="require"  # Supabase requires SSL
-    )
+    conn = psycopg2.connect(app_config.database_url)
     try:
         yield conn
         conn.commit()

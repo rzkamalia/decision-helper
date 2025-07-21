@@ -26,8 +26,9 @@ class QuestionGeneratorAgent(BaseAgent):
 
             # Instructions
             1. Identify the **options** and the surrounding **context** provided by the user.
-            2. Use this information, along with any relevant **web search results**, to generate **at least 7 thoughtful, unbiased, and context-aware questions** that help the user narrow down their preferences or requirements.
-            3. **Do not mention the options directly in any of the questions or answers.** Instead, guide the user through indirect questioning that reveals their priorities and constraints.
+            2. Use this information, along with any relevant **web search results**, to generate **a set of thoughtful, unbiased, and context-aware questions** that help the user narrow down their preferences or requirements.
+            3. Aim to generate between 3 and 10 questions, depending on the complexity and ambiguity of the context — focus on relevance and clarity, not quantity.
+            4. **Do not mention the options directly in any of the questions or answers.** Instead, guide the user through indirect questioning that reveals their priorities and constraints.
             """, # noqa: E501
         ).strip()
 

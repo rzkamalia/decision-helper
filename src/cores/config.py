@@ -19,10 +19,6 @@ class Configuration(BaseSettings):
     langsmith_api_key: str
     langchain_tracing_v2: str
 
-    pg_db: str
-    pg_user: str
-    pg_port: int
-    pg_host: str
-    pg_password: str
+    database_url: str
 
     google_application_credentials: str
