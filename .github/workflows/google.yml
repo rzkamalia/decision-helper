@@ -8,7 +8,7 @@ on:
 env:
   CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
   PROJECT_ID: ${{ secrets.GOOGLE_PROJECT }}
-  GKE_CLUSTER: decision-helper
+  GKE_CLUSTER: decision-helper-clusters
   LOCATION: asia-southeast2
   IMAGE_REPOSITORY: decision-helper-repo
 
