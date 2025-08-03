@@ -1,4 +1,7 @@
 .credential
 .env
 
+*jpg
+*webp
+
 __pycache__

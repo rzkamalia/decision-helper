@@ -12,13 +12,12 @@ class Configuration(BaseSettings):
     app_port: int = 8000
     app_host: str = "0.0.0.0"
 
+    exa_api_key: str
     openai_api_key: str
-    tavily_api_key: str
+    openrouter_api_key: str
 
     langsmith_project: str
     langsmith_api_key: str
     langchain_tracing_v2: str
 
     database_url: str
-
-    google_application_credentials: str

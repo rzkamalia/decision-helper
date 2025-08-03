@@ -1,5 +1,4 @@
 from pydantic import BaseModel, ConfigDict
-from typing_extensions import TypedDict
 
 
 class Question(BaseModel):
@@ -42,13 +41,6 @@ class Questions(BaseModel):
             ],
         },
     )
-
-
-class QuestionGeneratorState(TypedDict):
-    context: str
-    options: list[str]
-    web_search: str
-    questions: Questions
 
 
 class QuestionRequest(BaseModel):
