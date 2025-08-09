@@ -14,7 +14,6 @@ class Configuration(BaseSettings):
 
     exa_api_key: str
     openai_api_key: str
-    openrouter_api_key: str
 
     langsmith_project: str
     langsmith_api_key: str

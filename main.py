@@ -47,7 +47,6 @@ async def generate_questions(request: QuestionRequest):
             )
             options_content = []
         else:
-            print("here")
             options_content, questions = await main_agents.generate_image_question_agents(
                 context=request.context,
                 options=request.options,

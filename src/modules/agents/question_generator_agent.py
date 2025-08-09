@@ -22,7 +22,7 @@ class QuestionGeneratorAgent:
                 2. Use this information, along with any relevant **web search results**, to generate a set of **thoughtful, unbiased, and context-aware questions** that help the user narrow down their preferences or requirements.
                 3. Aim to generate between **3 and 10 questions**, depending on the complexity and ambiguity of the context — focus on **relevance and clarity**, not quantity.
                 4. All questions must be in the form of a **radio group**.
-                5. **Do not**:
+                5. **DO NOT**:
                     - Mention the options directly in any of the questions or answers.
                     - Ask leading questions that hint at or favor any specific option.
                     Instead, guide the user through **indirect questioning** that helps uncover their priorities, constraints, and preferences.
@@ -48,7 +48,7 @@ class QuestionGeneratorAgent:
                 2. Use this information to generate a set of thoughtful, unbiased, and context-aware questions that help the user narrow down their preferences or requirements.
                 3. Aim to generate between **3 and 10 questions**, depending on the complexity and ambiguity of the context — focus on **relevance and clarity**, not quantity.
                 4. All questions must be in the form of a **radio group**.
-                5. **Do not**:
+                5. **DO NOT**:
                     - Mention the options directly in any of the questions or answers.
                     - Ask leading questions that hint at or favor any specific option.
                     Instead, guide the user through **indirect questioning** that helps uncover their priorities, constraints, and preferences.
@@ -56,7 +56,7 @@ class QuestionGeneratorAgent:
                 """  # noqa: E501
             ).strip(),
             output_type=Questions,
-            model="gpt-4.1-mini",
+            model="gpt-5-mini",
         )
 
     async def node(self, context: str, options: list[str], web_search_content: str) -> Questions:
