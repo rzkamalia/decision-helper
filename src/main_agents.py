@@ -50,7 +50,13 @@ class Agents:
         question_answer_pairs: list[dict[str, str]],
         image_content: list[str],
         web_search_content: str,
-    ) -> dict[str, str]:
+    ) -> dict[str, int | str]:
+        print(type(context))
+        print(type(options))
+        print(type(question_answer_pairs))
+        print(type(image_content))
+        print(type(web_search_content))
+
         decision = await self._decision_generator_agent.node(
             context=context,
             options=options,
@@ -58,9 +64,7 @@ class Agents:
             image_content=image_content,
             web_search_content=web_search_content,
         )
-        print(decision)
         if len(image_content) == 0:
-            print("hereeeeeeeeee")
             decision = {
                 "chosen_option": decision.chosen_option,
                 "reason": decision.reason,
@@ -68,9 +72,7 @@ class Agents:
             return decision
 
         chosen_option = decision.chosen_option
-        print(chosen_option)
         number = int(chosen_option.split(" ")[-1])
-        print(number, options[number - 1])
 
         decision = {
             "chosen_option": options[number - 1],

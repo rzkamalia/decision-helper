@@ -5,7 +5,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
 from src import app_config
-from src.database.pg import save_decision_log, save_question_log
+from src.database.pg import get_question_log, save_decision_log, save_question_log
 from src.main_agents import Agents
 from src.modules.schemas.decision_generator_schema import DecisionRequest
 from src.modules.schemas.question_generator_schema import QuestionRequest
@@ -89,14 +89,21 @@ async def generate_decision(request: DecisionRequest):
                 detail="Missing question_answer_pairs in request. Please provide the answers from frontend.",
             )
 
-        result = await main_agents.generate_decision_agents(
-            context=request.context,
-            options=request.options,
-            question_answer_pairs=request.question_answer_pairs,
-            image_content=request.image_content,
-            web_search_content=request.web_search_content,
-        )
+        print("request.user_id", request.user_id)
+        print("request.question_answer_pairs", request.question_answer_pairs)
 
+        details = get_question_log(user_id=request.user_id)
+
+        print("hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", details)
+
+        result = await main_agents.generate_decision_agents(
+            context=details["context"],
+            options=details["options"],
+            question_answer_pairs=request.question_answer_pairs,
+            image_content=details["image_content"],
+            web_search_content=details["web_search_content"],
+        )
+        print("result", result)
         chosen_option = result["chosen_option"]
         reason = result["reason"]
 
