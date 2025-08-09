@@ -9,6 +9,7 @@ from src.database.pg import save_decision_log, save_question_log
 from src.main_agents import Agents
 from src.modules.schemas.decision_generator_schema import DecisionRequest
 from src.modules.schemas.question_generator_schema import QuestionRequest
+from src.modules.utils.image_utils import are_options_text_only
 
 app = FastAPI(title=app_config.app_name)
 
@@ -39,10 +40,19 @@ async def generate_questions(request: QuestionRequest):
     try:
         user_id = request.user_id if hasattr(request, "user_id") and request.user_id else str(uuid4())
 
-        web_search_content, questions = await main_agents.generate_question_agents(
-            context=request.context,
-            options=request.options,
-        )
+        if are_options_text_only(request.options):
+            web_search_content, questions = await main_agents.generate_question_agents(
+                context=request.context,
+                options=request.options,
+            )
+            options_content = []
+        else:
+            print("here")
+            options_content, questions = await main_agents.generate_image_question_agents(
+                context=request.context,
+                options=request.options,
+            )
+            web_search_content = ""
 
         # Save to database
         save_question_log(
@@ -50,12 +60,14 @@ async def generate_questions(request: QuestionRequest):
             context=request.context,
             options=request.options,
             questions=questions,
+            image_content=options_content,
             web_search_content=web_search_content,
         )
 
         return {
             "user_id": user_id,
             "questions": questions,
+            "image_content": options_content,
             "web_search_content": web_search_content,
         }
     except Exception as e:
@@ -82,6 +94,7 @@ async def generate_decision(request: DecisionRequest):
             context=request.context,
             options=request.options,
             question_answer_pairs=request.question_answer_pairs,
+            image_content=request.image_content,
             web_search_content=request.web_search_content,
         )
 

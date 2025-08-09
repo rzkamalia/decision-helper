@@ -21,7 +21,14 @@ def get_db_connection():
         conn.close()
 
 
-def save_question_log(user_id: str, context: str, options: list[str], questions: list[str], web_search_content: str):
+def save_question_log(  # noqa: PLR0913
+    user_id: str,
+    context: str,
+    options: list[str],
+    questions: list[str],
+    image_content: str,
+    web_search_content: str,
+):
     """Save generate question log to database."""
     created_at = datetime.datetime.now().replace(microsecond=0).isoformat()
 
@@ -29,15 +36,16 @@ def save_question_log(user_id: str, context: str, options: list[str], questions:
         with get_db_connection() as conn, conn.cursor() as cur:
             cur.execute(
                 """
-                INSERT INTO question_logs (user_id, created_at, context, options, questions, web_search_content)
-                VALUES (%s, %s, %s, %s, %s, %s)
-                """,
+                INSERT INTO question_logs (user_id, created_at, context, options, questions, image_content, web_search_content)
+                VALUES (%s, %s, %s, %s, %s, %s, %s)
+                """,  # noqa: E501
                 (
                     user_id,
                     created_at,
                     context,
                     json.dumps(options),
                     json.dumps(questions),
+                    json.dumps(image_content),
                     web_search_content,
                 ),
             )
