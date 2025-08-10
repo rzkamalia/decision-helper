@@ -89,12 +89,7 @@ async def generate_decision(request: DecisionRequest):
                 detail="Missing question_answer_pairs in request. Please provide the answers from frontend.",
             )
 
-        print("request.user_id", request.user_id)
-        print("request.question_answer_pairs", request.question_answer_pairs)
-
         details = get_question_log(user_id=request.user_id)
-
-        print("hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", details)
 
         result = await main_agents.generate_decision_agents(
             context=details["context"],

@@ -1,5 +1,3 @@
-from uuid import UUID
-
 from pydantic import BaseModel, ConfigDict
 
 
@@ -18,7 +16,7 @@ class Decision(BaseModel):
 
 
 class DecisionRequest(BaseModel):
-    user_id: UUID
+    user_id: str
     question_answer_pairs: list[dict[str, str]]
 
     model_config: ConfigDict = ConfigDict(  # type: ignore
