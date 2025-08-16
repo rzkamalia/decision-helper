@@ -98,7 +98,6 @@ async def generate_decision(request: DecisionRequest):
             image_content=details["image_content"],
             web_search_content=details["web_search_content"],
         )
-        print("result", result)
         chosen_option = result["chosen_option"]
         reason = result["reason"]
 
