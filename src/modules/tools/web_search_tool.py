@@ -16,11 +16,20 @@ def web_search(query: str) -> str:
 
         result = exa.search_and_contents(
             query,
-            type="keyword",
-            num_results=1,
+            num_results=2,
             summary=True,
+            start_crawl_date=current_date,
         )
-        return result
+        
+        result_str = ""
+        for i, res in enumerate(result.results, start=1):
+            result_str += f"## Website {i}\n"
+            result_str += f"### Title: {res.title}\n"
+            result_str += f"### URL: {res.url}\n"
+            result_str += f"### Content: {res.summary}\n"
+            result_str += "\n"
+
+        return result_str
     except Exception as e:
         print(f"Web search failed: {e}")
         return ""

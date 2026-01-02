@@ -8,7 +8,7 @@ def image_understanding(base64_image: str) -> str:
 
     try:
         response = client.responses.create(
-            model="gpt-4.1-mini",
+            model="gpt-5-mini-2025-08-07",
             input=[
                 {
                     "role": "user",

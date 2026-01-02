@@ -2,8 +2,31 @@ version: '3.8'
 
 services:
   be:
-    image: be:latest
+    image: be_dc
+    container_name: be
     env_file:
       - .env
     ports:
       - "8000:8000"
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16
+    container_name: postgres_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: decision_helper
+      POSTGRES_PASSWORD: juneebang
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U app_user -d app_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:

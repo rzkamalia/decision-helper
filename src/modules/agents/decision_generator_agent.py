@@ -7,7 +7,7 @@ from src.modules.schemas.decision_generator_schema import Decision
 
 class DecisionGeneratorAgent:
     def __init__(self):
-        self.agent = Agent(
+        self._agent = Agent(
             name="Decision Generator Agent",
             instructions=dedent(
                 """
@@ -28,10 +28,10 @@ class DecisionGeneratorAgent:
                 """  # noqa: E501
             ).strip(),
             output_type=Decision,
-            model="gpt-5-mini",
+            model="gpt-5-mini-2025-08-07",
         )
 
-        self.image_agent = Agent(
+        self._image_agent = Agent(
             name="Decision Generator Agent",
             instructions=dedent(
                 """
@@ -52,7 +52,7 @@ class DecisionGeneratorAgent:
                 """  # noqa: E501
             ).strip(),
             output_type=Decision,
-            model="gpt-5-mini",
+            model="gpt-5-mini-2025-08-07",
         )
 
     async def node(
@@ -89,7 +89,7 @@ class DecisionGeneratorAgent:
                 {web_search_content}
                 """,
             ).strip()
-            result: Decision = await Runner.run(self.agent, input_text)
+            result: Decision = await Runner.run(self._agent, input_text)
         else:
             options_str = ""
             for i, option in enumerate(image_content, 1):
@@ -110,6 +110,6 @@ class DecisionGeneratorAgent:
                 """,
             ).strip()
 
-            result: Decision = await Runner.run(self.image_agent, input_text)
+            result: Decision = await Runner.run(self._image_agent, input_text)
 
         return result.final_output

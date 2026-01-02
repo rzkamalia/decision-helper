@@ -7,7 +7,7 @@ from src.modules.schemas.question_generator_schema import Questions
 
 class QuestionGeneratorAgent:
     def __init__(self):
-        self.agent = Agent(
+        self._agent = Agent(
             name="Question Generator Agent",
             instructions=dedent(
                 """
@@ -30,7 +30,7 @@ class QuestionGeneratorAgent:
                 """  # noqa: E501
             ).strip(),
             output_type=Questions,
-            model="gpt-4.1-mini",
+            model="gpt-5-mini-2025-08-07",
         )
 
         self.image_agent = Agent(
@@ -56,7 +56,7 @@ class QuestionGeneratorAgent:
                 """  # noqa: E501
             ).strip(),
             output_type=Questions,
-            model="gpt-5-mini",
+            model="gpt-5-mini-2025-08-07",
         )
 
     async def node(self, context: str, options: list[str], web_search_content: str) -> Questions:
@@ -78,7 +78,7 @@ class QuestionGeneratorAgent:
             {web_search_content}
             """,
         ).strip()
-        result: Questions = await Runner.run(self.agent, input_text)
+        result: Questions = await Runner.run(self._agent, input_text)
 
         return result.final_output
 
@@ -98,6 +98,6 @@ class QuestionGeneratorAgent:
             {context}
             """,
         ).strip()
-        result: Questions = await Runner.run(self.image_agent, input_text)
+        result: Questions = await Runner.run(self._image_agent, input_text)
 
         return result.final_output
