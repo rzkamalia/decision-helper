@@ -5,7 +5,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
 from src import app_config
-from src.database.pg import get_question_log, save_decision_log, save_question_log
+from src.database.pg import create_tables_if_not_exists, get_question_log, save_decision_log, save_question_log
 from src.main_agents import Agents
 from src.modules.schemas.decision_generator_schema import DecisionRequest
 from src.modules.schemas.question_generator_schema import QuestionRequest
@@ -21,6 +21,8 @@ app.add_middleware(
     allow_headers=["*"],
     expose_headers=["*"],
 )
+
+create_tables_if_not_exists()
 
 main_agents = Agents()
 

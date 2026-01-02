@@ -33,7 +33,7 @@ class QuestionGeneratorAgent:
             model="gpt-5-mini-2025-08-07",
         )
 
-        self.image_agent = Agent(
+        self._image_agent = Agent(
             name="Image Question Generator Agent",
             instructions=dedent(
                 """

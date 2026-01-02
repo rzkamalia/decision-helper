@@ -1,6 +1,5 @@
 from src.modules.agents.decision_generator_agent import DecisionGeneratorAgent
 from src.modules.agents.question_generator_agent import QuestionGeneratorAgent
-from src.modules.agents.web_search_agent import WebSearchAgent
 from src.modules.tools.image_understanding_tool import image_understanding
 from src.modules.tools.web_search_tool import web_search
 
@@ -9,7 +8,6 @@ class Agents:
     def __init__(self):
         self._decision_generator_agent = DecisionGeneratorAgent()
         self._question_generator_agent = QuestionGeneratorAgent()
-        self._web_search_agent = WebSearchAgent(tools=[web_search])
 
     async def generate_image_question_agents(
         self, context: str, options: list[str]
@@ -29,7 +27,13 @@ class Agents:
     async def generate_question_agents(
         self, context: str, options: list[str]
     ) -> tuple[str, list[dict[str, str | list]]]:
-        web_search_content = await self._web_search_agent.node(context=context, options=options)
+        web_search_content = web_search(
+            f"""
+            Conduct a search about the provided options within the given context.
+            Options: {', '.join(options)}
+            Context: {context}
+            """.strip()
+        )
         questions = await self._question_generator_agent.node(
             context=context, options=options, web_search_content=web_search_content
         )

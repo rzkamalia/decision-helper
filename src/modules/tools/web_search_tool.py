@@ -1,6 +1,5 @@
 from datetime import datetime, timedelta
 
-from agents import function_tool
 from exa_py import Exa
 
 from src import app_config
@@ -8,7 +7,6 @@ from src import app_config
 current_date = (datetime.now() - timedelta(days=365)).date().isoformat()
 
 
-@function_tool
 def web_search(query: str) -> str:
     """Web searching using Exa with a given query."""
     try:

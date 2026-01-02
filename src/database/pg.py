@@ -1,5 +1,6 @@
 import datetime
 import json
+import time
 from contextlib import contextmanager
 
 import psycopg2
@@ -19,6 +20,48 @@ def get_db_connection():
         raise
     finally:
         conn.close()
+
+
+def create_tables_if_not_exists(retries: int = 3, delay: int = 2):
+    """Create tables if they don't exist."""
+    for attempt in range(retries):
+
+        try:
+            with get_db_connection() as conn, conn.cursor() as cur:
+                cur.execute(
+                    """
+                    CREATE TABLE IF NOT EXISTS question_logs (
+                        id SERIAL PRIMARY KEY,
+                        user_id VARCHAR(255) NOT NULL,
+                        created_at TIMESTAMP NOT NULL,
+                        context TEXT,
+                        options JSONB,
+                        questions JSONB,
+                        image_content JSONB,
+                        web_search_content TEXT
+                    )
+                    """
+                )
+                cur.execute(
+                    """
+                    CREATE TABLE IF NOT EXISTS decision_logs (
+                        id SERIAL PRIMARY KEY,
+                        user_id VARCHAR(255) NOT NULL,
+                        chosen_option TEXT,
+                        reason TEXT,
+                        question_answer_pairs JSONB,
+                        created_at TIMESTAMP NOT NULL
+                    )
+                    """
+                )
+            print("Tables created successfully.")
+        except Exception as e:
+            if attempt < retries - 1:
+                print(f"DB not ready, retrying in {delay}s...")
+                time.sleep(delay)
+            else:
+                print("Error creating tables:", e)
+                raise
 
 
 def save_question_log(  # noqa: PLR0913
@@ -77,7 +120,7 @@ def save_decision_log(user_id: str, chosen_option: str, question_answer_pairs: l
             )
             print("Insert to decision_logs successful")
     except Exception as e:
-        print("Error during save_question_log:", e)
+        print("Error during save_decision_log:", e)
         raise
 
 
