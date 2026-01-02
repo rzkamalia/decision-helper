@@ -1,0 +1,42 @@
+# VCS
+.git
+.gitignore
+
+# Python caches
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments (host)
+.venv/
+venv/
+env/
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Test & dev stuff
+tests/
+coverage/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# IDE / editor
+.vscode/
+.idea/
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Env files (never bake secrets)
+.env
+.env.*
+
+# Docker files themselves
+Dockerfile
+docker-compose.yml
