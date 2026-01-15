@@ -10,8 +10,12 @@ dependencies = [
     "openai-agents[viz]>=0.2.4",
     "psycopg2-binary>=2.9.10",
     "pydantic-settings>=2.10.1",
-    "ruff>=0.12.4",
     "uvicorn>=0.35.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.12.4",
 ]
 
 [tool.ruff.lint]

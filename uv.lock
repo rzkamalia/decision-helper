@@ -95,8 +95,12 @@ dependencies = [
     { name = "openai-agents", extra = ["viz"] },
     { name = "psycopg2-binary" },
     { name = "pydantic-settings" },
-    { name = "ruff" },
     { name = "uvicorn" },
+]
+
+[package.optional-dependencies]
+dev = [
+    { name = "ruff" },
 ]
 
 [package.metadata]
@@ -106,9 +110,10 @@ requires-dist = [
     { name = "openai-agents", extras = ["viz"], specifier = ">=0.2.4" },
     { name = "psycopg2-binary", specifier = ">=2.9.10" },
     { name = "pydantic-settings", specifier = ">=2.10.1" },
-    { name = "ruff", specifier = ">=0.12.4" },
+    { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.12.4" },
     { name = "uvicorn", specifier = ">=0.35.0" },
 ]
+provides-extras = ["dev"]
 
 [[package]]
 name = "distro"
